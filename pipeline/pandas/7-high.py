@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-Module containing the prune function for pandas DataFrame
+Module containing the high function for pandas DataFrame
 """
 
 
-def prune(df):
+def high(df):
     """
-    Removes any rows where the Close column contains NaN values.
+    Sorts a DataFrame by the High price column in descending order.
 
     Parameters:
         df (pd.DataFrame): The input DataFrame.
 
     Returns:
-        pd.DataFrame: The DataFrame with missing Close rows removed.
+        pd.DataFrame: The sorted DataFrame.
     """
-    return df.dropna(subset=['Close'])
+    return df.sort_values(by='High', ascending=False)
