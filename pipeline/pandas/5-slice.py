@@ -14,6 +14,6 @@ def slice(df):
     Returns:
         pd.DataFrame: The sliced DataFrame.
     """
-    columns = ['High', 'Low', 'Close', 'Volume_BTC']
+    columns = ['High', 'Low', 'Close', 'Volume_(BTC)']
     sliced_df = df[columns].iloc[::60]
     return sliced_df
