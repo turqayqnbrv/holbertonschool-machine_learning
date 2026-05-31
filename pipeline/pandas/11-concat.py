@@ -2,6 +2,8 @@
 """
 Module containing the concat function for pandas DataFrame
 """
+import pandas as pd
+index = __import__('10-index').index
 
 
 def concat(df1, df2):
@@ -15,13 +17,9 @@ def concat(df1, df2):
     Returns:
         pd.DataFrame: The concatenated multi-indexed DataFrame.
     """
-    index_func = __import__('10-index').index
-    idx_df1 = index_func(df1)
-    idx_df2 = index_func(df2)
+    idx_df1 = index(df1)
+    idx_df2 = index(df2)
 
     filtered_df2 = idx_df2.loc[:1417411920]
 
-    return __import__('pandas').concat(
-        [filtered_df2, idx_df1],
-        keys=['bitstamp', 'coinbase']
-    )
+    return pd.concat([filtered_df2, idx_df1], keys=['bitstamp', 'coinbase'])
