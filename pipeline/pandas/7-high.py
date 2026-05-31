@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """
-New code sorts the DataFrame by the High price in descending order
+Module containing the high function for pandas DataFrame
 """
 
-import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
+def high(df):
+    """
+    Sorts a DataFrame by the High price column in descending order.
 
-df = df.sort_values(by='High', ascending=False)
+    Parameters:
+        df (pd.DataFrame): The input DataFrame.
 
-print(df.head())
+    Returns:
+        pd.DataFrame: The sorted DataFrame.
+    """
+    return df.sort_values(by='High', ascending=False)
