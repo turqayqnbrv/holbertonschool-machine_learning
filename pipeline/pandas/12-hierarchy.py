@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
 """
-New code rearranges the MultiIndex levels such that the timestamp is first
+Module containing the hierarchy function for pandas DataFrame
 """
 
-import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df1 = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
-df2 = from_file('bitstampUSD_1-min_data_2012-01-01_to_2020-04-22.csv', ',')
+def hierarchy(df1, df2):
+    """
+    Concatenates tables within a timestamp window and swaps index levels.
 
-df1 = df1.loc[
-    (df1['Timestamp'] >= 1417411980) & (df1['Timestamp'] <= 1417417980)]
-df2 = df2.loc[
-    (df2['Timestamp'] >= 1417411980) & (df2['Timestamp'] <= 1417417980)]
+    Parameters:
+        df1 (pd.DataFrame): The coinbase DataFrame.
+        df2 (pd.DataFrame): The bitstamp DataFrame.
 
-df1 = df1.set_index('Timestamp')
-df2 = df2.set_index('Timestamp')
+    Returns:
+        pd.DataFrame: The sorted MultiIndex DataFrame.
+    """
+    index_func = __import__('10-index').index
+    idx_df1 = index_func(df1)
+    idx_df2 = index_func(df2)
 
-df = pd.concat([df2, df1], keys=['bitstamp', 'coinbase'])
+    start, end = 1417417980, 1417411980  # Chronological filter
+    sub_df1 = idx_df1.loc[end:start]
+    sub_df2 = idx_df2.loc[end:start]
 
-df = df.reorder_levels([1, 0], axis=0)
-
-df = df.sort_index()
-
-print(df)
+    combined = __import__('pandas').concat(
+        [sub_df2, sub_df1],
+        keys=['bitstamp', 'coinbase']
+    )
+    combined = combined.swaplevel(0, 1)
+    return combined.sort_index()
