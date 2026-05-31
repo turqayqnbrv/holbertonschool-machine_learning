@@ -4,15 +4,16 @@ Module containing the rename function for pandas DataFrame
 """
 import pandas as pd
 
+
 def rename(df):
     """
     Renames Timestamp column, converts to datetime, and filters columns.
 
     Parameters:
-        df (pd.DataFrame): The input DataFrame containing a 'Timestamp' column.
+        df (pd.DataFrame): The input DataFrame containing Timestamp.
 
     Returns:
-        pd.DataFrame: The modified DataFrame with 'Datetime' and 'Close' columns.
+        pd.DataFrame: The modified DataFrame with Datetime and Close.
     """
     df = df.rename(columns={'Timestamp': 'Datetime'})
     df['Datetime'] = pd.to_datetime(df['Datetime'], unit='s')
