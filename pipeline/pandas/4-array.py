@@ -2,7 +2,6 @@
 """
 Module containing the array function for pandas DataFrame
 """
-import pandas as pd
 
 
 def array(df):
