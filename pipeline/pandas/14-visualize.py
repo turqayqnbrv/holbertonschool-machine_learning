@@ -1,49 +1,54 @@
 #!/usr/bin/env python3
 """
-New code updates the script to visualize the DataFrame
+Data preprocessing script for Bitcoin historical data charting
 """
-
-from datetime import date
-import matplotlib.pyplot as plt
 import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
 
-# Remove column Weighted_Price
-df = df.drop(columns=['Weighted_Price'])
-# Rename the column Timestamp to Date
-df = df.rename(columns={'Timestamp': 'Date'})
-# Convert the timestamp values to date values
-df['Date'] = pd.to_datetime(df['Date'], unit='s')
-df['Date'] = df['Date'].dt.to_period('d')
-# The data will only plot from 2017 and beyond
-df = df.loc[df['Date'] >= "2017-01-01"]
-# Index the data frame on Date
-df = df.set_index('Date')
-# Missing values in Close should be set to the previous row value
-df['Close'].fillna(method='pad', inplace=True)
-# Missing values in High, Low, Open should be set to same row's Close value
-df['High'].fillna(df.Close, inplace=True)
-df['Low'].fillna(df.Close, inplace=True)
-df['Open'].fillna(df.Close, inplace=True)
-# Missing values in Volume_(BTC) and Volume_(Currency) should be set to 0
-df['Volume_(BTC)'].fillna(value=0, inplace=True)
-df['Volume_(Currency)'].fillna(value=0, inplace=True)
-# Group values of the same day such that:
-#   High: max
-#   Low: min
-#   Open: mean
-#   Close: mean
-#   Volume_(BTC): sum
-#   Volume_(Currency): sum
-df_plot = pd.DataFrame()
-df_plot['High'] = df['High'].resample('d').max()
-df_plot['Low'] = df['Low'].resample('d').min()
-df_plot['Open'] = df['Open'].resample('d').mean()
-df_plot['Close'] = df['Close'].resample('d').mean()
-df_plot['Volume_(BTC)'] = df['Volume_(BTC)'].resample('d').sum()
-df_plot['Volume_(Currency)'] = df['Volume_(Currency)'].resample('d').sum()
-# Plot the data from 2017 and beyond at daily intervals
-df_plot.plot()
-plt.show()
+def preprocess_and_resample(df):
+    """
+    Cleans, transforms, and resamples the tracking DataFrame daily.
+
+    Parameters:
+        df (pd.DataFrame): The raw input DataFrame.
+
+    Returns:
+        pd.DataFrame: Aggregated historical daily dataset for plotting.
+    """
+    # 1. Remove Weighted_Price
+    df = df.drop(columns=['Weighted_Price'], errors='ignore')
+
+    # 2 & 3. Rename Timestamp to Date & convert values
+    df = df.rename(columns={'Timestamp': 'Date'})
+    df['Date'] = pd.to_datetime(df['Date'], unit='s')
+
+    # 4. Index on Date
+    df = df.set_index('Date')
+
+    # 5. Missing values in Close filled with previous row values
+    df['Close'] = df['Close'].ffill()
+
+    # 6. Missing Open, High, Low filled with matching row's Close
+    df['High'] = df['High'].fillna(df['Close'])
+    df['Low'] = df['Low'].fillna(df['Close'])
+    df['Open'] = df['Open'].fillna(df['Close'])
+
+    # 7. Volume dimensions set to 0 where NaN
+    df['Volume_(BTC)'] = df['Volume_(BTC)'].fillna(0)
+    df['Volume_(Currency)'] = df['Volume_(Currency)'].fillna(0)
+
+    # 8. Filter data from 2017 and beyond
+    df_2017 = df.loc['2017':]
+
+    # 9. Daily interval grouping with specified aggregations
+    agg_rules = {
+        'High': 'max',
+        'Low': 'min',
+        'Open': 'mean',
+        'Close': 'mean',
+        'Volume_(BTC)': 'sum',
+        'Volume_(Currency)': 'sum'
+    }
+    transformed_df = df_2017.resample('D').agg(agg_rules)
+
+    return transformed_df
