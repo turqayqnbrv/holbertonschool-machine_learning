@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """
-New code removes the entries in the DataFrame where Close is NaN
+Module containing the prune function for pandas DataFrame
 """
 
-import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
+def prune(df):
+    """
+    Removes any rows where the Close column contains NaN values.
 
-df = df.dropna(subset=['Close'])
+    Parameters:
+        df (pd.DataFrame): The input DataFrame.
 
-print(df.head())
+    Returns:
+        pd.DataFrame: The DataFrame with missing Close rows removed.
+    """
+    return df.dropna(subset=['Close'])
