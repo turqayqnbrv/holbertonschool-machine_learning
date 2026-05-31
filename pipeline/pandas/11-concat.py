@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
 """
-New code indexes the DataFrame on the Timestamp columns and concatenates them
+Module containing the concat function for pandas DataFrame
 """
 
-import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df1 = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
-df2 = from_file('bitstampUSD_1-min_data_2012-01-01_to_2020-04-22.csv', ',')
+def concat(df1, df2):
+    """
+    Indexes and filters df2, then prepends it onto df1 with MultiIndex keys.
 
-df2 = df2.loc[df2['Timestamp'] <= 1417411920]
+    Parameters:
+        df1 (pd.DataFrame): The coinbase DataFrame.
+        df2 (pd.DataFrame): The bitstamp DataFrame.
 
-df1 = df1.set_index('Timestamp')
-df2 = df2.set_index('Timestamp')
+    Returns:
+        pd.DataFrame: The concatenated multi-indexed DataFrame.
+    """
+    index_func = __import__('10-index').index
+    idx_df1 = index_func(df1)
+    idx_df2 = index_func(df2)
 
-df = pd.concat([df2, df1], keys=['bitstamp', 'coinbase'])
+    filtered_df2 = idx_df2.loc[:1417411920]
 
-print(df)
+    return __import__('pandas').concat(
+        [filtered_df2, idx_df1],
+        keys=['bitstamp', 'coinbase']
+    )
