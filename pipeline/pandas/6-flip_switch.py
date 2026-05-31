@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-New code transposes the rows and columns and then sorts the data
-    in reverse chronological order
+Module containing the flip_switch function for pandas DataFrame
 """
 
-import pandas as pd
-from_file = __import__('2-from_file').from_file
 
-df = from_file('coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv', ',')
+def flip_switch(df):
+    """
+    Sorts a DataFrame in reverse chronological order and transposes it.
 
-df = df.sort_values(by='Timestamp', ascending=False).T
+    Parameters:
+        df (pd.DataFrame): The input DataFrame.
 
-print(df.tail(8))
+    Returns:
+        pd.DataFrame: The reversed and transposed DataFrame.
+    """
+    reversed_df = df.iloc[::-1]
+    return reversed_df.T
