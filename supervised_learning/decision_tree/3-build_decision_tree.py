@@ -3,6 +3,7 @@
 class Node:
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, depth=0, is_root=False):
+        """Initializes a Node object."""
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -22,28 +23,25 @@ class Node:
 
 class Leaf:
     def __init__(self, value, depth=0):
+        """Initializes a Leaf object."""
         self.value = value
         self.depth = depth
         self.is_leaf = True
 
     def get_leaves_below(self):
-        """
-        Base case for recursion: return a list containing this leaf itself.
-        """
+        """Base case: return a list containing this leaf."""
         return [self]
 
     def __str__(self):
-        """String representation of the leaf for display purposes."""
+        """String representation of the leaf."""
         return f"-> leaf [value={self.value}]"
 
 
 class Decision_Tree:
     def __init__(self, root=None):
+        """Initializes the Decision Tree."""
         self.root = root
 
     def get_leaves(self):
-        """
-        Public interface to retrieve all leaves from the root of the tree.
-        """
-        # Starts the recursive process from the root node
+        """Public interface to retrieve all leaves from the root."""
         return self.root.get_leaves_below()
