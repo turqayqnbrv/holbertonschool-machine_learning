@@ -30,7 +30,7 @@ class Node:
 
     def max_depth_below(self):
         """
-        Returns the maximum depth of the tree beneath this node.
+        Returns the maximum depth of the tree bneath this node.
         """
         max_depth = self.depth
 
@@ -46,17 +46,6 @@ class Node:
 
         return max_depth
 
-    def np_leaves_elements(self):
-        """
-        Recursively gathers all leaves downstream from this node.
-        """
-        leaves = []
-        if self.left_child is not None:
-            leaves.extend(self.left_child.np_leaves_elements())
-        if self.right_child is not None:
-            leaves.extend(self.right_child.np_leaves_elements())
-        return leaves
-
 
 class Leaf(Node):
     """
@@ -67,28 +56,17 @@ class Leaf(Node):
         """
         Initializes the leaf with a specific value and depth.
         """
-        super().__init__(depth=depth)
+        super().__init__()
         self.value = value
         self.is_leaf = True
+        self.depth = depth
 
     def max_depth_below(self):
         """
-        Returns the depth of the leaf, as leaf nodes are the endpoints
+        Returns the depth of the leaf, as leaf nodes are the endoiunts
         of a tree
         """
         return self.depth
-
-    def np_leaves_elements(self):
-        """
-        Returns a list containing only itself as it is a leaf.
-        """
-        return [self]
-
-    def __str__(self):
-        """
-        String representation of the leaf for custom stdout matching.
-        """
-        return f"-> leaf [value={self.value}]"
 
 
 class Decision_Tree():
@@ -119,9 +97,3 @@ class Decision_Tree():
         Returns the maximum depth of a tree
         """
         return self.root.max_depth_below()
-
-    def np_leaves_elements(self):
-        """
-        Returns a list of all elements that are leaves in the tree.
-        """
-        return self.root.np_leaves_elements()
