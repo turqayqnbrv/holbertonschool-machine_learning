@@ -4,6 +4,7 @@ Tree with Node, Leaf, and Decision_Tree classes."""
 
 
 class Node:
+    """Represents an internal node in a Decision Tree."""
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, depth=0, is_root=False):
         """Initializes a Node object."""
