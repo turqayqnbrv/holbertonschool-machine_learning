@@ -12,7 +12,10 @@ class Node:
         self.is_leaf = False
 
     def get_leaves_below(self):
-        """Returns a list of all leaves under this node."""
+        """
+        Recursively traverse the tree to collect all leaf nodes.
+        Calls this method on both children and concatenates the results.
+        """
         return (self.left_child.get_leaves_below() +
                 self.right_child.get_leaves_below())
 
@@ -24,10 +27,13 @@ class Leaf:
         self.is_leaf = True
 
     def get_leaves_below(self):
-        """Returns a list containing only this leaf."""
+        """
+        Base case for recursion: return a list containing this leaf itself.
+        """
         return [self]
 
     def __str__(self):
+        """String representation of the leaf for display purposes."""
         return f"-> leaf [value={self.value}]"
 
 
@@ -36,5 +42,8 @@ class Decision_Tree:
         self.root = root
 
     def get_leaves(self):
-        """Returns a list of all leaves in the tree."""
+        """
+        Public interface to retrieve all leaves from the root of the tree.
+        """
+        # Starts the recursive process from the root node
         return self.root.get_leaves_below()
