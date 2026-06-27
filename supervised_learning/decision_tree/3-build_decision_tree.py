@@ -26,6 +26,7 @@ class Node:
 
 
 class Leaf:
+    """Represents Leaf Class"""
     def __init__(self, value, depth=0):
         """Initializes a Leaf object."""
         self.value = value
@@ -42,6 +43,7 @@ class Leaf:
 
 
 class Decision_Tree:
+    """Represents Tree Class"""
     def __init__(self, root=None):
         """Initializes the Decision Tree."""
         self.root = root
