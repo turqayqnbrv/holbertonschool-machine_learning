@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Module for building a Decision Tree with Node, Leaf, and Decision_Tree classes."""
 
 class Node:
     def __init__(self, feature=None, threshold=None, left_child=None,
