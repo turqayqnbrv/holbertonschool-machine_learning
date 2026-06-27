@@ -13,7 +13,8 @@ class Node:
 
     def get_leaves_below(self):
         """Returns a list of all leaves under this node."""
-        return self.left_child.get_leaves_below() + self.right_child.get_leaves_below()
+        return (self.left_child.get_leaves_below() +
+                self.right_child.get_leaves_below())
 
 
 class Leaf:
