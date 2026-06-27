@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module for building a Decision 
+"""Module for building a Decision
 Tree with Node, Leaf, and Decision_Tree classes."""
 
 
