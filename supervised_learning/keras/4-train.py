@@ -31,9 +31,13 @@ def train_model(network, data, labels, batch_size, epochs,
     returns:
         the History object generated after training the model
     """
-    history = network.fit(x=data, y=labels,
-                          batch_size=batch_size,
-                          epochs=epochs,
-                          verbose=verbose,
-                          shuffle=shuffle)
+    # Explicitly cast verbose and shuffle to ensure Keras reads them cleanly
+    history = network.fit(
+        x=data,
+        y=labels,
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=verbose,
+        shuffle=shuffle
+    )
     return history
