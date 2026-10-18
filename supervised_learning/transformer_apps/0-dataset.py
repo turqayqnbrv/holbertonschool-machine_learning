@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+"""
+This script defines a Dataset class for loading and preparing
+a dataset for machine translation from Portuguese to English.
+"""
 import transformers
 from setup import load_pt2en
 
@@ -13,7 +16,7 @@ class Dataset:
         This method initializes the Dataset class by loading the train and
         validation splits and creating tokenizers for Portuguese and English.
         """
-        # Load dataset splits using the provided setup function
+        # Load dataset splits
         self.data_train, self.data_valid = load_pt2en()
 
         # Create tokenizers
@@ -36,8 +39,7 @@ class Dataset:
         pt_sentences = []
         en_sentences = []
         
-        # Iterate over the dataset using .numpy().decode('utf-8') 
-        # to unpack the TensorFlow tensors safely
+        # Iterate over the dataset to gather sentences
         for pt, en in data:
             pt_sentences.append(pt.numpy().decode('utf-8'))
             en_sentences.append(en.numpy().decode('utf-8'))
@@ -57,7 +59,14 @@ class Dataset:
                                                             vocab_size=2**13)
 
         # Return the tokenizers
-        self.tokenizer_pt = tokenizer_pt
-        self.tokenizer_en = tokenizer_en
+        return tokenizer_pt, tokenizer_en
 
-        return self.tokenizer_pt, self.tokenizer_en
+
+if __name__ == '__main__':
+    # Initialize the dataset
+    dataset = Dataset()
+    
+    # Print the validation sentences to match the expected stdout format
+    for pt, en in dataset.data_valid.take(5):
+        print(pt.numpy().decode('utf-8'))
+        print(en.numpy().decode('utf-8'))
