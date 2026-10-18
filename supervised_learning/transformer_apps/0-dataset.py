@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import transformers
 from setup import load_pt2en
 
